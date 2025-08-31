@@ -7,7 +7,7 @@ import {
 export const Route = createFileRoute("/" as keyof FileRoutesByPath)({
   loader: () => {
     throw redirect({
-      to: "/home",
+      to: "/auth/login",
     });
   },
   component: () => null,
