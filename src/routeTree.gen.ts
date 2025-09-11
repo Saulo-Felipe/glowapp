@@ -9,128 +9,96 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RegisterStep2RouteImport } from './routes/register-step-2'
-import { Route as RegisterStep1RouteImport } from './routes/register-step-1'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthRegisterRouteImport } from './routes/auth/register'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthSignUpPageRouteImport } from './routes/auth/sign-up/page'
+import { Route as AuthSignInPageRouteImport } from './routes/auth/sign-in/page'
+import { Route as AuthSignUpCompanyProfilePageRouteImport } from './routes/auth/sign-up/company-profile/page'
+import { Route as AuthSignUpCategoriesPageRouteImport } from './routes/auth/sign-up/categories/page'
 
-const RegisterStep2Route = RegisterStep2RouteImport.update({
-  id: '/register-step-2',
-  path: '/register-step-2',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterStep1Route = RegisterStep1RouteImport.update({
-  id: '/register-step-1',
-  path: '/register-step-1',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/auth/register',
-  path: '/auth/register',
+const AuthSignUpPageRoute = AuthSignUpPageRouteImport.update({
+  id: '/auth/sign-up/page',
+  path: '/auth/sign-up/page',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/auth/login',
-  path: '/auth/login',
+const AuthSignInPageRoute = AuthSignInPageRouteImport.update({
+  id: '/auth/sign-in/page',
+  path: '/auth/sign-in/page',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSignUpCompanyProfilePageRoute =
+  AuthSignUpCompanyProfilePageRouteImport.update({
+    id: '/auth/sign-up/company-profile/page',
+    path: '/auth/sign-up/company-profile/page',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthSignUpCategoriesPageRoute =
+  AuthSignUpCategoriesPageRouteImport.update({
+    id: '/auth/sign-up/categories/page',
+    path: '/auth/sign-up/categories/page',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/register-step-1': typeof RegisterStep1Route
-  '/register-step-2': typeof RegisterStep2Route
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
+  '/auth/sign-in/page': typeof AuthSignInPageRoute
+  '/auth/sign-up/page': typeof AuthSignUpPageRoute
+  '/auth/sign-up/categories/page': typeof AuthSignUpCategoriesPageRoute
+  '/auth/sign-up/company-profile/page': typeof AuthSignUpCompanyProfilePageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/register-step-1': typeof RegisterStep1Route
-  '/register-step-2': typeof RegisterStep2Route
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
+  '/auth/sign-in/page': typeof AuthSignInPageRoute
+  '/auth/sign-up/page': typeof AuthSignUpPageRoute
+  '/auth/sign-up/categories/page': typeof AuthSignUpCategoriesPageRoute
+  '/auth/sign-up/company-profile/page': typeof AuthSignUpCompanyProfilePageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/register-step-1': typeof RegisterStep1Route
-  '/register-step-2': typeof RegisterStep2Route
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
+  '/auth/sign-in/page': typeof AuthSignInPageRoute
+  '/auth/sign-up/page': typeof AuthSignUpPageRoute
+  '/auth/sign-up/categories/page': typeof AuthSignUpCategoriesPageRoute
+  '/auth/sign-up/company-profile/page': typeof AuthSignUpCompanyProfilePageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
-    | '/register-step-1'
-    | '/register-step-2'
-    | '/auth/login'
-    | '/auth/register'
+    | '/auth/sign-in/page'
+    | '/auth/sign-up/page'
+    | '/auth/sign-up/categories/page'
+    | '/auth/sign-up/company-profile/page'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
-    | '/register-step-1'
-    | '/register-step-2'
-    | '/auth/login'
-    | '/auth/register'
+    | '/auth/sign-in/page'
+    | '/auth/sign-up/page'
+    | '/auth/sign-up/categories/page'
+    | '/auth/sign-up/company-profile/page'
   id:
     | '__root__'
     | '/'
-    | '/about'
-    | '/register-step-1'
-    | '/register-step-2'
-    | '/auth/login'
-    | '/auth/register'
+    | '/auth/sign-in/page'
+    | '/auth/sign-up/page'
+    | '/auth/sign-up/categories/page'
+    | '/auth/sign-up/company-profile/page'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  RegisterStep1Route: typeof RegisterStep1Route
-  RegisterStep2Route: typeof RegisterStep2Route
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthSignInPageRoute: typeof AuthSignInPageRoute
+  AuthSignUpPageRoute: typeof AuthSignUpPageRoute
+  AuthSignUpCategoriesPageRoute: typeof AuthSignUpCategoriesPageRoute
+  AuthSignUpCompanyProfilePageRoute: typeof AuthSignUpCompanyProfilePageRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/register-step-2': {
-      id: '/register-step-2'
-      path: '/register-step-2'
-      fullPath: '/register-step-2'
-      preLoaderRoute: typeof RegisterStep2RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register-step-1': {
-      id: '/register-step-1'
-      path: '/register-step-1'
-      fullPath: '/register-step-1'
-      preLoaderRoute: typeof RegisterStep1RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -138,18 +106,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/auth/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
+    '/auth/sign-up/page': {
+      id: '/auth/sign-up/page'
+      path: '/auth/sign-up/page'
+      fullPath: '/auth/sign-up/page'
+      preLoaderRoute: typeof AuthSignUpPageRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
+    '/auth/sign-in/page': {
+      id: '/auth/sign-in/page'
+      path: '/auth/sign-in/page'
+      fullPath: '/auth/sign-in/page'
+      preLoaderRoute: typeof AuthSignInPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/sign-up/company-profile/page': {
+      id: '/auth/sign-up/company-profile/page'
+      path: '/auth/sign-up/company-profile/page'
+      fullPath: '/auth/sign-up/company-profile/page'
+      preLoaderRoute: typeof AuthSignUpCompanyProfilePageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/sign-up/categories/page': {
+      id: '/auth/sign-up/categories/page'
+      path: '/auth/sign-up/categories/page'
+      fullPath: '/auth/sign-up/categories/page'
+      preLoaderRoute: typeof AuthSignUpCategoriesPageRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -157,11 +139,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  RegisterStep1Route: RegisterStep1Route,
-  RegisterStep2Route: RegisterStep2Route,
-  AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
+  AuthSignInPageRoute: AuthSignInPageRoute,
+  AuthSignUpPageRoute: AuthSignUpPageRoute,
+  AuthSignUpCategoriesPageRoute: AuthSignUpCategoriesPageRoute,
+  AuthSignUpCompanyProfilePageRoute: AuthSignUpCompanyProfilePageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
