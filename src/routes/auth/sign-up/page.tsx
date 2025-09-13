@@ -34,10 +34,11 @@ function MainAuthPage(): ReactElement {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [checkEmail, setCheckEmail] = useState<boolean>(false)
-  const [otp, setOtp] = useState<string>('')
+  const [otpValue, setOtpValue] = useState<string>('')
   const [enabledResendOtp, setEnabledResendOtp] = useState(60)
   const navigate = useNavigate()
   const [isLoadingOtp, setIsLoadingOtp] = useState<boolean>(false)
+  const [isLoadingSendOtp, setIsLoadingSendOtp] = useState<boolean>(false)
 
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
@@ -53,46 +54,56 @@ function MainAuthPage(): ReactElement {
     formState: { isValid },
   } = form
 
+  const setOtpInterval = () => {
+    const interval = setInterval(() => {
+      setEnabledResendOtp((prev) => {
+        if (prev <= 0) {
+          clearInterval(interval)
+          return -1
+        }
+        return prev - 1
+      })
+    }, 1000)
+  }
+
   const onSubmit = async (formData: SignUpSchemaType): Promise<void> => {
     setIsLoading(true)
-
-    const data = await api<{ email: string }>({
-      pathname: '/auth/sign-up',
+    setOtpValue('')
+    setEnabledResendOtp(60)
+    const signUpResponse = await api<{ email: string }>({
+      pathname: '/auth/sign-up/send-otp',
       method: 'POST',
-      body: formData,
+      body: {
+        email: formData.email,
+      },
     })
-
-    if (data.success) {
-      const interval = setInterval(() => {
-        setEnabledResendOtp((prev) => {
-          if (prev === -1) {
-            clearInterval(interval)
-          }
-          return prev - 1
-        })
-      }, 1000)
-    }
-
     setIsLoading(false)
-    setCheckEmail(true)
+
+    if (signUpResponse.success) {
+      setCheckEmail(true)
+      setOtpInterval()
+    }
   }
 
   const handleVerifyOtp = async () => {
+    const { confirmPassword, password, email } = form.getValues()
+
     setIsLoadingOtp(true)
     const response = await api({
-      pathname: '/auth/sign-up/verify-otp',
+      pathname: '/auth/sign-up',
       method: 'POST',
       body: {
-        email: form.getValues('email'),
-        otp,
+        otp: otpValue,
+        email,
+        password,
+        confirmPassword,
       },
     })
+    setIsLoadingOtp(false)
 
     if (response.success) {
       navigate({ to: '/auth/sign-up/company-profile/page' })
     }
-
-    setIsLoadingOtp(false)
   }
 
   const handleGoogleLogin = (): void => {
@@ -186,7 +197,7 @@ function MainAuthPage(): ReactElement {
 
           {/* Form */}
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" id="sign-up-form">
               <FormField
                 control={form.control}
                 name="email"
@@ -399,7 +410,12 @@ function MainAuthPage(): ReactElement {
         </p>
       </div>
 
-      <Dialog open={checkEmail} onOpenChange={setCheckEmail}>
+      <Dialog
+        open={checkEmail}
+        onOpenChange={(open) => {
+          setCheckEmail(open)
+        }}
+      >
         <DialogContent>
           <DialogHeader className="mb-4">
             <DialogTitle>Verifique seu email</DialogTitle>
@@ -409,7 +425,7 @@ function MainAuthPage(): ReactElement {
           </DialogHeader>
 
           <div className="flex items-center justify-center">
-            <InputOTP value={otp} onChange={setOtp} maxLength={6}>
+            <InputOTP value={otpValue} onChange={setOtpValue} maxLength={6}>
               <InputOTPGroup>
                 <InputOTPSlot index={0} />
                 <InputOTPSlot index={1} />
@@ -425,13 +441,24 @@ function MainAuthPage(): ReactElement {
           </div>
 
           <div className="mt-4 flex items-center justify-end gap-2">
-            <Button variant="outline" disabled={enabledResendOtp !== 0}>
-              Reenviar em {enabledResendOtp} segundos
+            <Button
+              variant="outline"
+              disabled={enabledResendOtp !== -1 || isLoadingSendOtp}
+              type="submit"
+              form="sign-up-form"
+            >
+              {isLoadingSendOtp ? (
+                <LoaderCircleIcon className="size-4 animate-spin" />
+              ) : enabledResendOtp === -1 ? (
+                'Reenviar'
+              ) : (
+                'Reenviar em ' + enabledResendOtp + ' segundos'
+              )}
             </Button>
             <Button
               className="flex-1"
               onClick={() => {
-                if (otp.length < 6) {
+                if (otpValue.length < 6) {
                   return toast.warning('Código de verificação incompleto')
                 }
 
