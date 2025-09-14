@@ -1,5 +1,6 @@
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { api } from '@/services/api'
+import { Preferences } from '@capacitor/preferences'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import {
@@ -13,7 +14,6 @@ import {
 import { useState, type ReactElement } from 'react'
 import { useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
-import { toast } from 'sonner'
 import { SignInSchema, type SignInSchemaType } from './_schemas/sign-in'
 
 export const Route = createFileRoute('/auth/sign-in/page')({
@@ -40,14 +40,19 @@ function MainAuthPage(): ReactElement {
 
   const onSubmit = async (formData: SignInSchemaType): Promise<void> => {
     setIsLoading(true)
-    const data = await api<SignInSchemaType>({
+    const data = await api<{ token: string }>({
       pathname: '/auth/sign-in',
       method: 'POST',
       body: formData,
+      removeTokenFromHeader: true,
     })
 
-    if (!('error' in data)) {
-      toast.success('Login realizado com sucesso')
+    if (data.success && data.data) {
+      await Preferences.set({
+        key: 'company_auth_token',
+        value: data.data.token,
+      })
+
       navigate({ to: '/auth/sign-up/company-profile/page' })
     }
 

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignUpPageRouteImport } from './routes/auth/sign-up/page'
 import { Route as AuthSignInPageRouteImport } from './routes/auth/sign-in/page'
+import { Route as AuthSignInAttypesRouteImport } from './routes/auth/sign-in/@types'
 import { Route as AuthSignUpCompanyProfilePageRouteImport } from './routes/auth/sign-up/company-profile/page'
 import { Route as AuthSignUpCategoriesPageRouteImport } from './routes/auth/sign-up/categories/page'
 
@@ -30,6 +31,11 @@ const AuthSignInPageRoute = AuthSignInPageRouteImport.update({
   path: '/auth/sign-in/page',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSignInAttypesRoute = AuthSignInAttypesRouteImport.update({
+  id: '/auth/sign-in/@types',
+  path: '/auth/sign-in/@types',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthSignUpCompanyProfilePageRoute =
   AuthSignUpCompanyProfilePageRouteImport.update({
     id: '/auth/sign-up/company-profile/page',
@@ -45,6 +51,7 @@ const AuthSignUpCategoriesPageRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth/sign-in/@types': typeof AuthSignInAttypesRoute
   '/auth/sign-in/page': typeof AuthSignInPageRoute
   '/auth/sign-up/page': typeof AuthSignUpPageRoute
   '/auth/sign-up/categories/page': typeof AuthSignUpCategoriesPageRoute
@@ -52,6 +59,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth/sign-in/@types': typeof AuthSignInAttypesRoute
   '/auth/sign-in/page': typeof AuthSignInPageRoute
   '/auth/sign-up/page': typeof AuthSignUpPageRoute
   '/auth/sign-up/categories/page': typeof AuthSignUpCategoriesPageRoute
@@ -60,6 +68,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth/sign-in/@types': typeof AuthSignInAttypesRoute
   '/auth/sign-in/page': typeof AuthSignInPageRoute
   '/auth/sign-up/page': typeof AuthSignUpPageRoute
   '/auth/sign-up/categories/page': typeof AuthSignUpCategoriesPageRoute
@@ -69,6 +78,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth/sign-in/@types'
     | '/auth/sign-in/page'
     | '/auth/sign-up/page'
     | '/auth/sign-up/categories/page'
@@ -76,6 +86,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth/sign-in/@types'
     | '/auth/sign-in/page'
     | '/auth/sign-up/page'
     | '/auth/sign-up/categories/page'
@@ -83,6 +94,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth/sign-in/@types'
     | '/auth/sign-in/page'
     | '/auth/sign-up/page'
     | '/auth/sign-up/categories/page'
@@ -91,6 +103,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthSignInAttypesRoute: typeof AuthSignInAttypesRoute
   AuthSignInPageRoute: typeof AuthSignInPageRoute
   AuthSignUpPageRoute: typeof AuthSignUpPageRoute
   AuthSignUpCategoriesPageRoute: typeof AuthSignUpCategoriesPageRoute
@@ -120,6 +133,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInPageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/sign-in/@types': {
+      id: '/auth/sign-in/@types'
+      path: '/auth/sign-in/@types'
+      fullPath: '/auth/sign-in/@types'
+      preLoaderRoute: typeof AuthSignInAttypesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/sign-up/company-profile/page': {
       id: '/auth/sign-up/company-profile/page'
       path: '/auth/sign-up/company-profile/page'
@@ -139,6 +159,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthSignInAttypesRoute: AuthSignInAttypesRoute,
   AuthSignInPageRoute: AuthSignInPageRoute,
   AuthSignUpPageRoute: AuthSignUpPageRoute,
   AuthSignUpCategoriesPageRoute: AuthSignUpCategoriesPageRoute,

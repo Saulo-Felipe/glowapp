@@ -76,6 +76,7 @@ function MainAuthPage(): ReactElement {
       body: {
         email: formData.email,
       },
+      removeTokenFromHeader: true,
     })
     setIsLoading(false)
 
@@ -89,7 +90,7 @@ function MainAuthPage(): ReactElement {
     const { confirmPassword, password, email } = form.getValues()
 
     setIsLoadingOtp(true)
-    const response = await api({
+    const response = await api<{ registrationStep: number }>({
       pathname: '/auth/sign-up',
       method: 'POST',
       body: {
@@ -98,11 +99,20 @@ function MainAuthPage(): ReactElement {
         password,
         confirmPassword,
       },
+      removeTokenFromHeader: true,
     })
     setIsLoadingOtp(false)
 
     if (response.success) {
-      navigate({ to: '/auth/sign-up/company-profile/page' })
+      if (response.data?.registrationStep === 1) {
+        return navigate({ to: '/auth/sign-up/company-profile/page' })
+      }
+
+      if (response.data?.registrationStep === 2) {
+        return navigate({ to: '/auth/sign-up/categories/page' })
+      }
+
+      return // navigate to home
     }
   }
 
